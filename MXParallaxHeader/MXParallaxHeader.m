@@ -50,6 +50,7 @@ static void * const kMXParallaxHeaderKVOContext = (void*)&kMXParallaxHeaderKVOCo
 
 @interface MXParallaxHeader ()
 @property (nonatomic,weak) UIScrollView *scrollView;
+@property (nonatomic,weak) NSLayoutConstraint *heightConstraint;
 @end
 
 @implementation MXParallaxHeader {
@@ -93,7 +94,9 @@ static void * const kMXParallaxHeaderKVOContext = (void*)&kMXParallaxHeaderKVOCo
         [self adjustScrollViewTopInset:self.scrollView.contentInset.top - _height + height];
         
         _height = height;
-        [self updateConstraints];
+        
+        self.heightConstraint.constant = height;
+        self.heightConstraint.active = YES;
         [self layoutContentView];
     }
 }
@@ -175,7 +178,8 @@ static void * const kMXParallaxHeaderKVOContext = (void*)&kMXParallaxHeaderKVOCo
     [self.view.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor].active = YES;
     [self.view.trailingAnchor constraintEqualToAnchor:self.contentView.trailingAnchor].active = YES;
     [self.view.centerYAnchor constraintEqualToAnchor:self.contentView.centerYAnchor].active = YES;
-    [self.view.heightAnchor constraintEqualToConstant:self.height].active = YES;
+    self.heightConstraint = [self.view.heightAnchor constraintEqualToConstant:self.height];
+    self.heightConstraint.active = YES;
 }
 
 - (void)setFillModeConstraints {
@@ -189,7 +193,8 @@ static void * const kMXParallaxHeaderKVOContext = (void*)&kMXParallaxHeaderKVOCo
     [self.view.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor].active = YES;
     [self.view.trailingAnchor constraintEqualToAnchor:self.contentView.trailingAnchor].active = YES;
     [self.view.topAnchor constraintEqualToAnchor:self.contentView.topAnchor].active = YES;
-    [self.view.heightAnchor constraintGreaterThanOrEqualToConstant:self.height].active = YES;
+    self.heightConstraint = [self.view.heightAnchor constraintGreaterThanOrEqualToConstant:self.height];
+    self.heightConstraint.active = YES;
 
     NSLayoutConstraint *constraint = [self.view.bottomAnchor constraintEqualToAnchor:self.contentView.bottomAnchor];
     constraint.priority = UILayoutPriorityDefaultHigh;
@@ -200,21 +205,24 @@ static void * const kMXParallaxHeaderKVOContext = (void*)&kMXParallaxHeaderKVOCo
     [self.view.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor].active = YES;
     [self.view.trailingAnchor constraintEqualToAnchor:self.contentView.trailingAnchor].active = YES;
     [self.view.topAnchor constraintEqualToAnchor:self.contentView.topAnchor].active = YES;
-    [self.view.heightAnchor constraintEqualToConstant:self.height].active = YES;
+    self.heightConstraint = [self.view.heightAnchor constraintEqualToConstant:self.height];
+    self.heightConstraint.active = YES;
 }
 
 - (void)setBottomModeConstraints {
     [self.view.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor].active = YES;
     [self.view.trailingAnchor constraintEqualToAnchor:self.contentView.trailingAnchor].active = YES;
     [self.view.bottomAnchor constraintEqualToAnchor:self.contentView.bottomAnchor].active = YES;
-    [self.view.heightAnchor constraintEqualToConstant:self.height].active = YES;
+    self.heightConstraint = [self.view.heightAnchor constraintEqualToConstant:self.height];
+    self.heightConstraint.active = YES;
 }
 
 - (void)setBottomFillModeConstraints {
     [self.view.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor].active = YES;
     [self.view.trailingAnchor constraintEqualToAnchor:self.contentView.trailingAnchor].active = YES;
     [self.view.bottomAnchor constraintEqualToAnchor:self.contentView.bottomAnchor].active = YES;
-    [self.view.heightAnchor constraintGreaterThanOrEqualToConstant:self.height].active = YES;
+    self.heightConstraint = [self.view.heightAnchor constraintGreaterThanOrEqualToConstant:self.height];
+    self.heightConstraint.active = YES;
     
     NSLayoutConstraint *constraint = [self.view.topAnchor constraintEqualToAnchor:self.contentView.topAnchor];
     constraint.priority = UILayoutPriorityDefaultHigh;
